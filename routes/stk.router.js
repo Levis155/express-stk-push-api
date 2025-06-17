@@ -48,6 +48,7 @@ router.route("/").post(generateAccessToken, async (req, res) => {
 });
 
 router.route("/callback").post((req, res) => {
+    console.log("🔔 M-PESA CALLBACK RECEIVED");
     const callbackData = req.body.Body?.stkCallback?.CallbackMetadata;
     
     if(!callbackData) {
