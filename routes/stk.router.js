@@ -40,6 +40,7 @@ router.route("/").post(generateAccessToken, async (req, res) => {
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
 
+    console.log(response.data);
     res.status(200).json(response.data);
   } catch (e) {
     console.error(e.response?.data || e.message);
