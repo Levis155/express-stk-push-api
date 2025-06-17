@@ -7,6 +7,6 @@ const app = express();
 
 app.use(express.json());
 
-app.use("/stk-push", stkPushRouter)
+app.use("/stk-push", stkPushRouter);
 
 export default app;

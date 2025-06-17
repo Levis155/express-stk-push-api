@@ -33,7 +33,7 @@ router.route("/").post(generateAccessToken, async (req, res) => {
         PartyA: `254${phone.substring(1)}`,
         PartyB: businessShortCode,
         PhoneNumber: `254${phone.substring(1)}`,
-        CallBackURL: "https://mydomain.com/pat",
+        CallBackURL: process.env.CALLBACK_URL,
         AccountReference: `254${phone.substring(1)}`,
         TransactionDesc: "Test",
       },
@@ -42,9 +42,19 @@ router.route("/").post(generateAccessToken, async (req, res) => {
 
     res.status(200).json(response.data);
   } catch (e) {
-    console.error(error.response?.data || error.message);
+    console.error(e.response?.data || e.message);
     res.status(500).json({ error: "Payment initiation failed" });
   }
 });
+
+router.route("/callback").post((req, res) => {
+    const callbackData = req.body.Body?.stkCallback?.CallbackMetadata;
+    
+    if(!callbackData) {
+        return res.json("ok");
+    }
+
+    console.log(callbackData);
+})
 
 export default router;
