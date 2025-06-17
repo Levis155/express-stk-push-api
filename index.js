@@ -1,8 +1,12 @@
 import express from "express";
-import stkRouter from "./routes/stk.routes.js";
+import dotenv from "dotenv";
+dotenv.config();
+import stkPushRouter from "./routes/stk.router.js";
 
 const app = express();
 
-app.use("/stk", stkRouter)
+app.use(express.json());
+
+app.use("/stk-push", stkPushRouter)
 
 export default app;
