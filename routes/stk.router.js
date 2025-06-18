@@ -18,7 +18,7 @@ router.route("/").post(generateAccessToken, async (req, res) => {
       ("0" + new Date().getMinutes()).slice(-2) +
       ("0" + new Date().getSeconds()).slice(-2);
 
-    const password = new Buffer.from(
+    const password = Buffer.from(
       businessShortCode + passkey + timestamp
     ).toString("base64");
 
@@ -39,8 +39,6 @@ router.route("/").post(generateAccessToken, async (req, res) => {
       },
       { headers: { Authorization: `Bearer ${accessToken}` } }
     );
-
-    console.log(response.data);
     res.status(200).json(response.data);
   } catch (e) {
     console.error(e.response?.data || e.message);
@@ -49,14 +47,18 @@ router.route("/").post(generateAccessToken, async (req, res) => {
 });
 
 router.route("/callback").post((req, res) => {
-    console.log("🔔 M-PESA CALLBACK RECEIVED");
-    const callbackData = req.body.Body?.stkCallback?.CallbackMetadata;
-    
-    if(!callbackData) {
-        return res.json("ok");
-    }
+  const callbackBody = req.body;
 
-    console.log(callbackData);
-})
+  if (!callbackBody.Body.stkCallback.CallbackMetadata) {
+    console.log("No CallbackMetadata found", callbackBody);
+    return res.status(200).json("ok");
+  }
+
+  console.log(
+    "Callback Metadata:",
+    callbackBody.Body.stkCallback.CallbackMetadata
+  );
+  res.status(200).json("ok");
+});
 
 export default router;
